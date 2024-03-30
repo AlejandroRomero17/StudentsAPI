@@ -35,7 +35,11 @@ const StudentController = {
 
   async updateStudent(req, res) {
     try {
-      const student = await StudentDAO.updateStudent(req.params.no_control, req.body);
+      const { no_control } = req.params; // Obtener el número de control original del parámetro de la URL
+      const updatedStudent = req.body; // Obtener los datos actualizados del estudiante del cuerpo de la solicitud
+      
+      // Actualizar al estudiante por su número de control original
+      const student = await StudentDAO.updateStudent(no_control, updatedStudent);
       if (!student) {
         return res.status(404).json({ error: 'Estudiante no encontrado' });
       }
@@ -53,7 +57,6 @@ const StudentController = {
       res.status(500).json({ error: error.message });
     }
   }
-  
 };
 
 export default StudentController;
